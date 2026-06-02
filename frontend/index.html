@@ -1,18 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de usuários e posts</title>
+    <title>Lista de Usuários e Posts</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <header>
         <h1>Lista de Usuários e Posts</h1>
     </header>
+
     <main class="container">
+
+        <!-- COLUNA USUÁRIOS -->
         <section class="coluna">
             <h2>Usuários</h2>
             <form id="form-usuario">
@@ -23,17 +24,23 @@
             <ul id="lista-usuarios"></ul>
         </section>
 
+        <!-- COLUNA POSTS -->
         <section class="coluna">
             <h2>Posts</h2>
             <form id="form-posts">
                 <input type="hidden" id="posts-id">
+                <select id="post-userId" required>
+                    <option value="">— Autor —</option>
+                </select>
                 <input type="text" id="post-titulo" placeholder="Titulo" required>
                 <textarea id="post-corpo" placeholder="Conteudo do post" required></textarea>
                 <button type="submit" id="btn-post">Adicionar Post</button>
             </form>
             <ul id="lista-posts"></ul>
         </section>
+
     </main>
+
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 </html>
