@@ -26,7 +26,7 @@ header h1 {
     height: calc(100vh - 45px);
 }
 
-.coluna:first-child {
+.coluna-usuarios {
     width: 280px;
     min-width: 280px;
     background-color: #850c0c;
@@ -38,20 +38,20 @@ header h1 {
     overflow-y: auto;
 }
 
-.coluna:first-child h2 {
+.coluna-usuarios h2 {
     font-size: 15px;
     font-weight: bold;
     color: #fff;
     margin-bottom: 4px;
 }
 
-.coluna:first-child #form-usuario {
+.coluna-usuarios #form-usuario {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
 
-.coluna:first-child input[type="text"] {
+.coluna-usuarios input[type="text"] {
     padding: 8px 10px;
     background-color: #ffffff;
     border: 1px solid #520404;
@@ -61,11 +61,11 @@ header h1 {
     outline: none;
 }
 
-.coluna:first-child input[type="text"]::placeholder {
+.coluna-usuarios input[type="text"]::placeholder {
     color: #888;
 }
 
-.coluna:first-child input[type="text"]:focus {
+.coluna-usuarios input[type="text"]:focus {
     border-color: #888;
 }
 
@@ -110,7 +110,7 @@ header h1 {
     gap: 4px;
 }
 
-.coluna:last-child {
+.coluna-posts {
     flex: 1;
     background-color: #f9f9f9;
     padding: 20px 24px;
@@ -120,7 +120,7 @@ header h1 {
     overflow-y: auto;
 }
 
-.coluna:last-child h2 {
+.coluna-posts h2 {
     font-size: 20px;
     font-weight: bold;
     color: #111;
