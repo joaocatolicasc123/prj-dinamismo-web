@@ -43,7 +43,6 @@ function inicializarDados() {
         .catch(erro => console.error("Erro na API de Posts: ", erro));
 }
 
-// Preenche o <select> de autor no formulário de posts
 function popularSelectUsuarios() {
     post_userId.innerHTML = '<option value="">— Autor —</option>';
     dadosUsuarios.forEach(user => {
@@ -54,7 +53,6 @@ function popularSelectUsuarios() {
     });
 }
 
-// ── USUÁRIOS ──────────────────────────────────────────────
 
 function renderUsers() {
     lista_usuarios.innerHTML = "";
@@ -105,7 +103,6 @@ function removerUser(id) {
     renderUsers();
 }
 
-// ── POSTS ─────────────────────────────────────────────────
 
 function renderPosts() {
     lista_posts.innerHTML = '';
