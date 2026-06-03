@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f3f5;
+    color: #333;
+}
+
+header {
+    background-color: #34495e;
+    padding: 20px;
+}
+
+header h1 {
+    color: white;
+    font-size: 28px;
+}
+
+.conteudo {
+    padding: 20px;
+}
+
+.formularios {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.box {
+    background-color: white;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.formularios .box {
+    flex: 1;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    font-size: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input,
+select,
+textarea {
+    padding: 10px;
+    border: 1px solid #cfcfcf;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3498db;
+    color: white;
+    font-size: 14px;
+}
+
+#lista-usuarios {
+    list-style: none;
+}
+
+#lista-usuarios li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px;
+    margin-bottom: 8px;
+
+    border: 1px solid #ddd;
+    border-radius: 4px;
+
+    background-color: #fafafa;
+}
+
+#lista-usuarios li div {
+    display: flex;
+    gap: 5px;
+}
+
+#lista-posts {
+    list-style: none;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+#lista-posts li {
+    background-color: #fafafa;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#lista-posts li h3 {
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+#lista-posts li p {
+    line-height: 1.4;
+    font-size: 14px;
+}
+
+.post-autor {
+    color: #666;
+    font-size: 13px;
+}
+
+.acoes-post {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.btn-editar,
+.btn-deletar {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    background-color: white;
+    color: #333;
+
+    font-size: 13px;
+}
+
+.btn-editar {
+    border-color: #3498db;
+}
+
+.btn-deletar {
+    border-color: #e74c3c;
+}
