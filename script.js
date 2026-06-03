@@ -19,50 +19,50 @@ const botaoSalvarPost = document.getElementById("btn-post");
 const containerParaMostrarPosts = document.getElementById("lista-posts");
 
 function buscarDadosIniciais() {
-    fetch(linkDasPessoas)
-        .then(resposta => resposta.json())
-        .then(dadosBrutos => {
-            listaDePessoas = dadosBrutos.reverse().map(pessoa => ({
-                id: pessoa.id,
-                nome: pessoa.name
-            }));
+  fetch(linkDasPessoas)
+    .then((resposta) => resposta.json())
+    .then((dadosBrutos) => {
+      listaDePessoas = dadosBrutos.reverse().map((pessoa) => ({
+        id: pessoa.id,
+        nome: pessoa.name,
+      }));
 
-            desenharPessoasNaTela();
-            atualizarOpcoesDeAutores();
-        });
+      desenharPessoasNaTela();
+      atualizarOpcoesDeAutores();
+    });
 
-    fetch(linkDosPosts)
-        .then(resposta => resposta.json())
-        .then(dadosBrutos => {
-            listaDePosts = dadosBrutos.reverse().map(post => ({
-                id: post.id,
-                titulo: post.title,
-                texto: post.body,
-                donoDoPostId: post.userId
-            }));
+  fetch(linkDosPosts)
+    .then((resposta) => resposta.json())
+    .then((dadosBrutos) => {
+      listaDePosts = dadosBrutos.reverse().map((post) => ({
+        id: post.id,
+        titulo: post.title,
+        texto: post.body,
+        donoDoPostId: post.userId,
+      }));
 
-            desenharPostsNaTela();
-        });
-}
-
-function atualizarOpcoesDeAutores() {
-    menuEscolhaDeAutor.innerHTML = '<option value="">Selecione um autor</option>';
-
-    listaDePessoas.forEach(pessoa => {
-        const novaOpcao = document.createElement("option");
-        novaOpcao.value = pessoa.id;
-        novaOpcao.textContent = pessoa.nome;
-        menuEscolhaDeAutor.appendChild(novaOpcao);
+      desenharPostsNaTela();
     });
 }
 
+function atualizarOpcoesDeAutores() {
+  menuEscolhaDeAutor.innerHTML = '<option value="">Selecione um autor</option>';
+
+  listaDePessoas.forEach((pessoa) => {
+    const novaOpcao = document.createElement("option");
+    novaOpcao.value = pessoa.id;
+    novaOpcao.textContent = pessoa.nome;
+    menuEscolhaDeAutor.appendChild(novaOpcao);
+  });
+}
+
 function desenharPessoasNaTela() {
-    containerParaMostrarPessoas.innerHTML = "";
+  containerParaMostrarPessoas.innerHTML = "";
 
-    listaDePessoas.forEach(pessoa => {
-        const itemDaLista = document.createElement("li");
+  listaDePessoas.forEach((pessoa) => {
+    const itemDaLista = document.createElement("li");
 
-        itemDaLista.innerHTML = `
+    itemDaLista.innerHTML = `
             <span>${pessoa.nome}</span>
             <div>
                 <button class="btn-editar" onclick="colocarPessoaNoFormulario(${pessoa.id})">Editar</button>
@@ -70,66 +70,70 @@ function desenharPessoasNaTela() {
             </div>
         `;
 
-        containerParaMostrarPessoas.appendChild(itemDaLista);
-    });
+    containerParaMostrarPessoas.appendChild(itemDaLista);
+  });
 }
 
-formularioPessoa.addEventListener("submit", evento => {
-    evento.preventDefault();
+formularioPessoa.addEventListener("submit", (evento) => {
+  evento.preventDefault();
 
-    const idPessoa = campoIdPessoa.value;
-    const nomePessoa = campoNomePessoa.value;
+  const idPessoa = campoIdPessoa.value;
+  const nomePessoa = campoNomePessoa.value;
 
-    if (idPessoa) {
-        listaDePessoas = listaDePessoas.map(pessoa => {
-            if (pessoa.id == idPessoa) {
-                return { ...pessoa, nome: nomePessoa };
-            }
-            return pessoa;
-        });
-        botaoSalvarPessoa.textContent = "Adicionar Usuário";
-    } else {
-        listaDePessoas.unshift({
-            id: Date.now(),
-            nome: nomePessoa
-        });
-    }
+  if (idPessoa) {
+    listaDePessoas = listaDePessoas.map((pessoa) => {
+      if (pessoa.id == idPessoa) {
+        return { ...pessoa, nome: nomePessoa };
+      }
+      return pessoa;
+    });
+    botaoSalvarPessoa.textContent = "Adicionar Usuário";
+  } else {
+    listaDePessoas.unshift({
+      id: Date.now(),
+      nome: nomePessoa,
+    });
+  }
 
-    formularioPessoa.reset();
-    campoIdPessoa.value = "";
+  formularioPessoa.reset();
+  campoIdPessoa.value = "";
 
-    atualizarOpcoesDeAutores();
-    desenharPessoasNaTela();
-    desenharPostsNaTela();
+  atualizarOpcoesDeAutores();
+  desenharPessoasNaTela();
+  desenharPostsNaTela();
 });
 
 function colocarPessoaNoFormulario(id) {
-    const pessoaEncontrada = listaDePessoas.find(p => p.id == id);
-    if (!pessoaEncontrada) return;
+  const pessoaEncontrada = listaDePessoas.find((p) => p.id == id);
+  if (!pessoaEncontrada) return;
 
-    campoNomePessoa.value = pessoaEncontrada.nome;
-    campoIdPessoa.value = pessoaEncontrada.id;
-    botaoSalvarPessoa.textContent = "Atualizar Usuário";
+  campoNomePessoa.value = pessoaEncontrada.nome;
+  campoIdPessoa.value = pessoaEncontrada.id;
+  botaoSalvarPessoa.textContent = "Atualizar Usuário";
 }
 
 function removerPessoa(id) {
-    listaDePessoas = listaDePessoas.filter(p => p.id != id);
+  listaDePessoas = listaDePessoas.filter((p) => p.id != id);
 
-    atualizarOpcoesDeAutores();
-    desenharPessoasNaTela();
-    desenharPostsNaTela();
+  atualizarOpcoesDeAutores();
+  desenharPessoasNaTela();
+  desenharPostsNaTela();
 }
 
 function desenharPostsNaTela() {
-    containerParaMostrarPosts.innerHTML = "";
+  containerParaMostrarPosts.innerHTML = "";
 
-    listaDePosts.forEach(post => {
-        const autorEncontrado = listaDePessoas.find(p => p.id == post.donoDoPostId);
-        const nomeDoAutor = autorEncontrado ? autorEncontrado.nome : "Autor desconhecido";
+  listaDePosts.forEach((post) => {
+    const autorEncontrado = listaDePessoas.find(
+      (p) => p.id == post.donoDoPostId,
+    );
+    const nomeDoAutor = autorEncontrado
+      ? autorEncontrado.nome
+      : "Autor desconhecido";
 
-        const itemDoPost = document.createElement("li");
+    const itemDoPost = document.createElement("li");
 
-        itemDoPost.innerHTML = `
+    itemDoPost.innerHTML = `
             <div>
                 <h3>${post.titulo}</h3>
                 <p>${post.texto}</p>
@@ -141,61 +145,61 @@ function desenharPostsNaTela() {
             </div>
         `;
 
-        containerParaMostrarPosts.appendChild(itemDoPost);
-    });
+    containerParaMostrarPosts.appendChild(itemDoPost);
+  });
 }
 
-formularioPost.addEventListener("submit", evento => {
-    evento.preventDefault();
+formularioPost.addEventListener("submit", (evento) => {
+  evento.preventDefault();
 
-    const idPost = campoIdPost.value;
-    const tituloPost = campoTituloPost.value;
-    const textoPost = campoTextoPost.value;
-    const idAutorSelecionado = Number(menuEscolhaDeAutor.value);
+  const idPost = campoIdPost.value;
+  const tituloPost = campoTituloPost.value;
+  const textoPost = campoTextoPost.value;
+  const idAutorSelecionado = Number(menuEscolhaDeAutor.value);
 
-    if (idPost) {
-        listaDePosts = listaDePosts.map(post => {
-            if (post.id == idPost) {
-                return {
-                    ...post,
-                    titulo: tituloPost,
-                    texto: textoPost,
-                    donoDoPostId: idAutorSelecionado
-                };
-            }
-            return post;
-        });
-        botaoSalvarPost.textContent = "Adicionar Post";
-    } else {
-        listaDePosts.unshift({
-            id: Date.now(),
-            titulo: tituloPost,
-            texto: textoPost,
-            donoDoPostId: idAutorSelecionado
-        });
-    }
+  if (idPost) {
+    listaDePosts = listaDePosts.map((post) => {
+      if (post.id == idPost) {
+        return {
+          ...post,
+          titulo: tituloPost,
+          texto: textoPost,
+          donoDoPostId: idAutorSelecionado,
+        };
+      }
+      return post;
+    });
+    botaoSalvarPost.textContent = "Adicionar Post";
+  } else {
+    listaDePosts.unshift({
+      id: Date.now(),
+      titulo: tituloPost,
+      texto: textoPost,
+      donoDoPostId: idAutorSelecionado,
+    });
+  }
 
-    formularioPost.reset();
-    campoIdPost.value = "";
+  formularioPost.reset();
+  campoIdPost.value = "";
 
-    desenharPostsNaTela();
+  desenharPostsNaTela();
 });
 
 function colocarPostNoFormulario(id) {
-    const postEncontrado = listaDePosts.find(p => p.id == id);
-    if (!postEncontrado) return;
+  const postEncontrado = listaDePosts.find((p) => p.id == id);
+  if (!postEncontrado) return;
 
-    campoTituloPost.value = postEncontrado.titulo;
-    campoTextoPost.value = postEncontrado.texto;
-    campoIdPost.value = postEncontrado.id;
-    menuEscolhaDeAutor.value = postEncontrado.donoDoPostId;
+  campoTituloPost.value = postEncontrado.titulo;
+  campoTextoPost.value = postEncontrado.texto;
+  campoIdPost.value = postEncontrado.id;
+  menuEscolhaDeAutor.value = postEncontrado.donoDoPostId;
 
-    botaoSalvarPost.textContent = "Atualizar Post";
+  botaoSalvarPost.textContent = "Atualizar Post";
 }
 
 function removerPost(id) {
-    listaDePosts = listaDePosts.filter(p => p.id != id);
-    desenharPostsNaTela();
+  listaDePosts = listaDePosts.filter((p) => p.id != id);
+  desenharPostsNaTela();
 }
 
 buscarDadosIniciais();
