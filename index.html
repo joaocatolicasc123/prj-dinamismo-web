@@ -3,34 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>N2 Luis</title>
+    <title>N2 Luiz</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="toast-container"></div>
+
     <header>
-      <h1>N2 Luis</h1>
+      <h1>Painel Administrativo</h1>
+      <p style="color: #b0bec5; font-size: 14px; margin-top: 5px;">Gerenciamento integrado de usuários e publicações</p>
     </header>
 
     <main class="conteudo">
       <section class="formularios">
         <div class="box">
-          <h2>Usuários</h2>
+          <h2>Cadastrar / Editar Usuário</h2>
 
           <form id="form-usuario">
             <input type="hidden" id="usuario-id" />
             <input
               type="text"
               id="usuario-nome"
-              placeholder="Nome do usuário"
+              placeholder="Nome completo do usuário"
               required
             />
 
-            <button type="submit" id="btn-usuario">Adicionar Usuário</button>
+            <div class="botoes-grupo">
+              <button type="submit" id="btn-usuario" class="btn-principal">Adicionar Usuário</button>
+              <button type="button" id="btn-cancelar-usuario" class="btn-cancelar" style="display: none;">Cancelar</button>
+            </div>
           </form>
         </div>
 
         <div class="box">
-          <h2>Posts</h2>
+          <h2>Criar / Editar Post</h2>
 
           <form id="form-posts">
             <input type="hidden" id="posts-id" />
@@ -39,15 +45,18 @@
               <option value="">Selecione um autor</option>
             </select>
 
-            <input type="text" id="post-titulo" placeholder="Título" required />
+            <input type="text" id="post-titulo" placeholder="Título da publicação" required />
 
             <textarea
               id="post-corpo"
-              placeholder="Conteúdo do post"
+              placeholder="Conteúdo descritivo do post..."
               required
             ></textarea>
 
-            <button type="submit" id="btn-post">Adicionar Post</button>
+            <div class="botoes-grupo">
+              <button type="submit" id="btn-post" class="btn-principal">Adicionar Post</button>
+              <button type="button" id="btn-cancelar-post" class="btn-cancelar" style="display: none;">Cancelar</button>
+            </div>
           </form>
         </div>
       </section>

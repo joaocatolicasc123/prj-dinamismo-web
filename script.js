@@ -4,19 +4,37 @@ const linkDosPosts = "https://jsonplaceholder.typicode.com/posts";
 let listaDePessoas = [];
 let listaDePosts = [];
 
+// Elementos - Usuários
 const formularioPessoa = document.getElementById("form-usuario");
 const campoIdPessoa = document.getElementById("usuario-id");
 const campoNomePessoa = document.getElementById("usuario-nome");
 const botaoSalvarPessoa = document.getElementById("btn-usuario");
+const botaoCancelarPessoa = document.getElementById("btn-cancelar-usuario");
 const containerParaMostrarPessoas = document.getElementById("lista-usuarios");
 
+// Elementos - Posts
 const formularioPost = document.getElementById("form-posts");
 const campoIdPost = document.getElementById("posts-id");
 const campoTituloPost = document.getElementById("post-titulo");
 const campoTextoPost = document.getElementById("post-corpo");
 const menuEscolhaDeAutor = document.getElementById("post-userId");
 const botaoSalvarPost = document.getElementById("btn-post");
+const botaoCancelarPost = document.getElementById("btn-cancelar-post");
 const containerParaMostrarPosts = document.getElementById("lista-posts");
+
+// Função Utilitária de Feedback Visual (Heurística #1)
+function mostrarNotificacao(mensagem, tipo = "sucesso") {
+  const container = document.getElementById("toast-container");
+  const toast = document.createElement("div");
+  toast.className = `toast ${tipo}`;
+  toast.textContent = mensagem;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 3500);
+}
 
 function buscarDadosIniciais() {
   fetch(linkDasPessoas)
@@ -29,12 +47,13 @@ function buscarDadosIniciais() {
 
       desenharPessoasNaTela();
       atualizarOpcoesDeAutores();
-    });
+    })
+    .catch(() => mostrarNotificacao("Erro ao carregar usuários da API.", "aviso"));
 
   fetch(linkDosPosts)
     .then((resposta) => resposta.json())
     .then((dadosBrutos) => {
-      listaDePosts = dadosBrutos.reverse().map((post) => ({
+      listaDePosts = dadosBrutos.slice(0, 12).reverse().map((post) => ({
         id: post.id,
         titulo: post.title,
         texto: post.body,
@@ -42,7 +61,8 @@ function buscarDadosIniciais() {
       }));
 
       desenharPostsNaTela();
-    });
+    })
+    .catch(() => mostrarNotificacao("Erro ao carregar publicações da API.", "aviso"));
 }
 
 function atualizarOpcoesDeAutores() {
@@ -58,6 +78,12 @@ function atualizarOpcoesDeAutores() {
 
 function desenharPessoasNaTela() {
   containerParaMostrarPessoas.innerHTML = "";
+
+  // Tratamento de Estado Vazio (Heurística #1)
+  if (listaDePessoas.length === 0) {
+    containerParaMostrarPessoas.innerHTML = '<li class="msg-vazia">Nenhum usuário cadastrado até o momento.</li>';
+    return;
+  }
 
   listaDePessoas.forEach((pessoa) => {
     const itemDaLista = document.createElement("li");
@@ -87,16 +113,16 @@ formularioPessoa.addEventListener("submit", (evento) => {
       }
       return pessoa;
     });
-    botaoSalvarPessoa.textContent = "Adicionar Usuário";
+    mostrarNotificacao("Usuário atualizado com sucesso!");
+    resetarFormularioUsuario();
   } else {
     listaDePessoas.unshift({
       id: Date.now(),
       nome: nomePessoa,
     });
+    mostrarNotificacao("Usuário cadastrado com sucesso!");
+    formularioPessoa.reset();
   }
-
-  formularioPessoa.reset();
-  campoIdPessoa.value = "";
 
   atualizarOpcoesDeAutores();
   desenharPessoasNaTela();
@@ -109,11 +135,27 @@ function colocarPessoaNoFormulario(id) {
 
   campoNomePessoa.value = pessoaEncontrada.nome;
   campoIdPessoa.value = pessoaEncontrada.id;
-  botaoSalvarPessoa.textContent = "Atualizar Usuário";
+  botaoSalvarPessoa.textContent = "Salvar Alterações";
+  botaoCancelarPessoa.style.display = "block"; // Controle e liberdade (Heurística #3)
+  campoNomePessoa.focus();
 }
 
+function resetarFormularioUsuario() {
+  formularioPessoa.reset();
+  campoIdPessoa.value = "";
+  botaoSalvarPessoa.textContent = "Adicionar Usuário";
+  botaoCancelarPessoa.style.display = "none";
+}
+
+botaoCancelarPessoa.addEventListener("click", resetarFormularioUsuario);
+
 function removerPessoa(id) {
+  // Prevenção de Erros (Heurística #5)
+  const confirmarExclusao = confirm("Tem certeza que deseja excluir este usuário? As publicações dele ficarão marcadas sem autor.");
+  if (!confirmarExclusao) return;
+
   listaDePessoas = listaDePessoas.filter((p) => p.id != id);
+  mostrarNotificacao("Usuário excluído do sistema.", "aviso");
 
   atualizarOpcoesDeAutores();
   desenharPessoasNaTela();
@@ -123,13 +165,19 @@ function removerPessoa(id) {
 function desenharPostsNaTela() {
   containerParaMostrarPosts.innerHTML = "";
 
+  // Tratamento de Estado Vazio (Heurística #1)
+  if (listaDePosts.length === 0) {
+    containerParaMostrarPosts.innerHTML = '<div class="msg-vazia">Nenhum post publicado até o momento.</div>';
+    return;
+  }
+
   listaDePosts.forEach((post) => {
     const autorEncontrado = listaDePessoas.find(
       (p) => p.id == post.donoDoPostId,
     );
     const nomeDoAutor = autorEncontrado
       ? autorEncontrado.nome
-      : "Autor desconhecido";
+      : "Autor excluído/desconhecido";
 
     const itemDoPost = document.createElement("li");
 
@@ -169,7 +217,8 @@ formularioPost.addEventListener("submit", (evento) => {
       }
       return post;
     });
-    botaoSalvarPost.textContent = "Adicionar Post";
+    mostrarNotificacao("Post atualizado com sucesso!");
+    resetarFormularioPost();
   } else {
     listaDePosts.unshift({
       id: Date.now(),
@@ -177,10 +226,9 @@ formularioPost.addEventListener("submit", (evento) => {
       texto: textoPost,
       donoDoPostId: idAutorSelecionado,
     });
+    mostrarNotificacao("Post publicado com sucesso!");
+    formularioPost.reset();
   }
-
-  formularioPost.reset();
-  campoIdPost.value = "";
 
   desenharPostsNaTela();
 });
@@ -194,11 +242,27 @@ function colocarPostNoFormulario(id) {
   campoIdPost.value = postEncontrado.id;
   menuEscolhaDeAutor.value = postEncontrado.donoDoPostId;
 
-  botaoSalvarPost.textContent = "Atualizar Post";
+  botaoSalvarPost.textContent = "Salvar Alterações";
+  botaoCancelarPost.style.display = "block"; // Controle e liberdade (Heurística #3)
+  campoTituloPost.focus();
 }
 
+function resetarFormularioPost() {
+  formularioPost.reset();
+  campoIdPost.value = "";
+  botaoSalvarPost.textContent = "Adicionar Post";
+  botaoCancelarPost.style.display = "none";
+}
+
+botaoCancelarPost.addEventListener("click", resetarFormularioPost);
+
 function removerPost(id) {
+  // Prevenção de Erros (Heurística #5)
+  const confirmarExclusao = confirm("Deseja realmente apagar em definitivo esta publicação?");
+  if (!confirmarExclusao) return;
+
   listaDePosts = listaDePosts.filter((p) => p.id != id);
+  mostrarNotificacao("Post removido.", "aviso");
   desenharPostsNaTela();
 }
 
